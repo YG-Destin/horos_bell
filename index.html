@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horoscope Belline</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+body::before {
+  content: "";
+  position: fixed; /* 화면 전체 덮기 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('images/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+ opacity: 0.5; /* 배경만 투명도 */
+  z-index: -1; /* 본문 뒤로 보내기 */
+}
+
+        h1 {
+            color: #333;
+        }
+        #question {
+            width: 80%;
+            max-width: 300px;
+            height: 50px;
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+       #cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    visibility: hidden;
+    gap: 10px; /* 카드 사이 간격만 일정하게 */
+    width: auto; /* 컨테이너가 카드 크기에 맞게 자동 줄어듦 */
+    padding: 0; 
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+img {
+    width: 150px;      /* 카드 가로 크기 고정 */
+    height: 250px;     /* 카드 세로 크기 고정 */
+    object-fit: cover; /* 이미지가 카드 영역에 꽉 차게 */
+    border-radius: 8px;
+    border: 0.5px solid black;
+    background-color: white;
+    margin: 0;         /* 카드 사이 여백은 gap으로만 조정 */
+}
+
+/* 화면이 작아질 경우 카드 크기 자동 조정 */
+@media (max-width: 500px) {
+    img {
+        width: 100%; /* 화면이 작아질수록 크기도 줄어듦 */
+        max-width: 120px; /* 카드 크기 자동 축소 */
+    }
+}
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+
+.button-container {
+  display: flex;           /* 가로로 나란히 */
+  gap: 10px;               /* 버튼 사이 간격 */
+  justify-content: center; /* 가운데 정렬 */
+  margin-top: 20px;        /* 위 여백 */
+}
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 화면이 작을 때 (예: 휴대전화) 카드 크기 조정 */
+        @media (max-width: 500px) {
+            img {
+                width: 80px;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Horoscope Belline</h1>
+    <input type="text" id="question" placeholder="질문을 입력하세요 (선택사항)" />
+
+    <div class="button-container">
+  <button onclick="drawCards(1)">1카드 뽑기</button>
+  <button onclick="drawCards(3)">3카드 뽑기</button>
+</div>
+    
+    <div id="cards">
+        <img id="card1" src="" alt="Card 1" />
+        <img id="card2" src="" alt="Card 2" />
+        <img id="card3" src="" alt="Card 3" />
+    </div>
+    
+    <footer>✨ 제작: 연유🌱</footer>
+
+    <script>
+        function drawCards(count) {
+            let cardFiles = [];
+            for (let i = 1; i < 53; i++) {
+                cardFiles.push(i.toString().padStart(2, '0') + '.png');
+            }
+
+            let selectedCards = [];
+            while (selectedCards.length < count) {
+                let randomIndex = Math.floor(Math.random() * cardFiles.length);
+                let selectedCard = cardFiles[randomIndex];
+                if (!selectedCards.includes(selectedCard)) {
+                    selectedCards.push(selectedCard);
+                }
+            }
+
+            // 카드 영역 초기화
+            document.getElementById('cards').innerHTML = '';
+
+            // 뽑은 카드 개수만큼 이미지 태그 생성
+            for (let i = 0; i < count; i++) {
+                let img = document.createElement('img');
+                img.src = 'cards/' + selectedCards[i];
+                img.alt = `Card ${i+1}`;
+                document.getElementById('cards').appendChild(img);
+            }
+
+            document.getElementById('cards').style.visibility = 'visible';
+
+            let question = document.getElementById('question').value;
+            if (question) {
+                console.log('질문: ' + question);
+            }
+        }
+    </script>
+</body>           
+
+</html>
